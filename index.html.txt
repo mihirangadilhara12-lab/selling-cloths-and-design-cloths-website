@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scloths | Premium Fashion & Custom Design</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #F4E8C1;
+            --black: #0a0a0a;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        h1, h2, h3, .serif {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .gold-text {
+            color: var(--gold);
+        }
+        
+        .gold-bg {
+            background-color: var(--gold);
+        }
+        
+        .gold-border {
+            border-color: var(--gold);
+        }
+        
+        .hover-gold:hover {
+            color: var(--gold);
+            transition: color 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0a0a0a 0%, #2a2a2a 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #D4AF37 0%, #B8941F 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+        }
+        
+        .product-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+        
+        .product-image {
+            transition: transform 0.6s ease;
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--gold);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.4s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        
+        .cart-sidebar {
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .cart-sidebar.open {
+            transform: translateX(0);
+        }
+        
+        .design-preview {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="%23f0f0f0"/><path d="M0 0L100 100M100 0L0 100" stroke="%23ddd" stroke-width="1"/></svg>');
+        }
+        
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--gold);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .size-option.active {
+            background-color: var(--gold);
+            color: white;
+            border-color: var(--gold);
+        }
+        
+        .color-option {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .color-option:hover, .color-option.active {
+            border-color: var(--gold);
+            transform: scale(1.1);
+        }
+        
+        .scroll-hidden::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        
+        .input-field {
+            transition: all 0.3s;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .input-field:focus {
+            border-color: var(--gold);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #0a0a0a;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            border-left: 4px solid var(--gold);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-effect border-b border-gray-100 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center cursor-pointer" onclick="router.navigate('home')">
+                    <span class="text-3xl font-bold serif tracking-tight">Style<span class="gold-text">Craft</span></span>
+                </div>
+                
+                <div class="hidden md:flex space-x-8">
+                    <a onclick="router.navigate('home')" class="nav-link cursor-pointer text-sm font-medium uppercase tracking-wider hover-gold">Home</a>
+                    <a onclick="router.navigate('shop')" class="nav-link cursor-pointer text-sm font-medium uppercase tracking-wider hover-gold">Shop</a>
+                    <a onclick="router.navigate('custom')" class="nav-link cursor-pointer text-sm font-medium uppercase tracking-wider hover-gold">Custom Design</a>
+                    <a onclick="router.navigate('about')" class="nav-link cursor-pointer text-sm font-medium uppercase tracking-wider hover-gold">About</a>
+                    <a onclick="router.navigate('contact')" class="nav-link cursor-pointer text-sm font-medium uppercase tracking-wider hover-gold">Contact</a>
+                </div>
+                
+                <div class="flex items-center space-x-6">
+                    <button onclick="router.navigate('shop')" class="hover-gold transition-colors">
+                        <i class="fas fa-search text-lg"></i>
+                    </button>
+                    <button onclick="cart.toggle()" class="hover-gold transition-colors relative">
+                        <i class="fas fa-shopping-bag text-lg"></i>
+                        <span id="cart-count" class="absolute -top-2 -right-2 gold-bg text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">0</span>
+                    </button>
+                    <button class="md:hidden hover-gold" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a onclick="router.navigate('home')" class="block px-3 py-2 text-base font-medium hover:bg-gray-50">Home</a>
+                <a onclick="router.navigate('shop')" class="block px-3 py-2 text-base font-medium hover:bg-gray-50">Shop</a>
+                <a onclick="router.navigate('custom')" class="block px-3 py-2 text-base font-medium hover:bg-gray-50">Custom Design</a>
+                <a onclick="router.navigate('about')" class="block px-3 py-2 text-base font-medium hover:bg-gray-50">About</a>
+                <a onclick="router.navigate('contact')" class="block px-3 py-2 text-base font-medium hover:bg-gray-50">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main id="app" class="pt-20 min-h-screen">
+        <!-- Content injected by JavaScript -->
+    </main>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden transition-opacity" onclick="cart.toggle()"></div>
+    <div id="cart-sidebar" class="cart-sidebar fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 shadow-2xl overflow-y-auto">
+        <div class="p-6 border-b flex justify-between items-center">
+            <h2 class="text-2xl serif font-bold">Your Cart</h2>
+            <button onclick="cart.toggle()" class="hover-gold text-2xl">&times;</button>
+        </div>
+        <div id="cart-items" class="p-6 space-y-4">
+            <!-- Cart items injected here -->
+        </div>
+        <div class="border-t p-6 space-y-4">
+            <div class="flex justify-between text-lg font-semibold">
+                <span>Total</span>
+                <span id="cart-total" class="gold-text text-2xl">$0.00</span>
+            </div>
+            <button onclick="cart.checkout()" class="w-full btn-primary text-white py-4 rounded-none font-semibold uppercase tracking-wider">
+                Proceed to Checkout
+            </button>
+            <button onclick="cart.toggle(); router.navigate('shop')" class="w-full border-2 border-black py-3 hover:bg-black hover:text-white transition-colors uppercase text-sm tracking-wider">
+                Continue Shopping
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <span id="toast-message">Item added to cart</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white pt-16 pb-8 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <h3 class="text-2xl serif font-bold mb-4">Style<span class="gold-text">Craft</span></h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Elevating fashion through craftsmanship and personalization. Create your unique style with our premium custom design services.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 uppercase tracking-wider text-sm">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a onclick="router.navigate('shop')" class="hover-gold cursor-pointer">Shop All</a></li>
+                        <li><a onclick="router.navigate('custom')" class="hover-gold cursor-pointer">Custom Design</a></li>
+                        <li><a onclick="router.navigate('about')" class="hover-gold cursor-pointer">About Us</a></li>
+                        <li><a onclick="router.navigate('contact')" class="hover-gold cursor-pointer">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 uppercase tracking-wider text-sm">Customer Service</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#" class="hover-gold">Shipping Info</a></li>
+                        <li><a href="#" class="hover-gold">Returns</a></li>
+                        <li><a href="#" class="hover-gold">Size Guide</a></li>
+                        <li><a href="#" class="hover-gold">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 uppercase tracking-wider text-sm">Connect</h4>
+                    <div class="flex space-x-4 mb-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-yellow-600 transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-red-600 transition-colors">
+                            <i class="fab fa-pinterest-p"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-400 text-sm">Subscribe to our newsletter for exclusive offers.</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+                <p>&copy; 2026 StyleCraft. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white">Privacy Policy</a>
+                    <a href="#" class="hover:text-white">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Data Store
+        const store = {
+            products: [
+                {
+                    id: 1,
+                    name: "Classic Tailored Blazer",
+                    price: 299,
+                    category: "women",
+                    image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&auto=format&fit=crop",
+                    sizes: ["XS", "S", "M", "L", "XL"],
+                    colors: ["#000000", "#8B4513", "# navy"],
+                    description: "Premium wool blend blazer with gold button detailing. Perfect for professional and evening wear.",
+                    featured: true
+                },
+                {
+                    id: 2,
+                    name: "Minimalist Cotton Tee",
+                    price: 49,
+                    category: "men",
+                    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&auto=format&fit=crop",
+                    sizes: ["S", "M", "L", "XL", "XXL"],
+                    colors: ["#FFFFFF", "#000000", "#808080", "# navy"],
+                    description: "100% organic cotton t-shirt with reinforced seams for durability.",
+                    featured: true
+                },
+                {
+                    id: 3,
+                    name: "Silk Evening Dress",
+                    price: 459,
+                    category: "women",
+                    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&auto=format&fit=crop",
+                    sizes: ["XS", "S", "M", "L"],
+                    colors: ["#FFD700", "#FF0000", "#000000"],
+                    description: "Luxurious silk dress with flowing silhouette and adjustable waist tie.",
+                    featured: true
+                },
+                {
+                    id: 4,
+                    name: "Urban Street Hoodie",
+                    price: 129,
+                    category: "men",
+                    image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&auto=format&fit=crop",
+                    sizes: ["S", "M", "L", "XL"],
+                    colors: ["#000000", "#808080", "# navy", "#8B0000"],
+                    description: "Heavyweight cotton hoodie with kangaroo pocket and ribbed cuffs.",
+                    featured: false
+                },
+                {
+                    id: 5,
+                    name: "Kids Adventure Jacket",
+                    price: 89,
+                    category: "kids",
+                    image: "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=800&auto=format&fit=crop",
+                    sizes: ["2T", "3T", "4T", "5T", "6"],
+                    colors: ["#FFD700", "#FF6347", "#4169E1"],
+                    description: "Water-resistant jacket with reflective strips for safety.",
+                    featured: true
+                },
+                {
+                    id: 6,
+                    name: "Leather Crossbody Bag",
+                    price: 189,
+                    category: "accessories",
+                    image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop",
+                    sizes: ["One Size"],
+                    colors: ["#8B4513", "#000000", "#D2691E"],
+                    description: "Genuine leather bag with adjustable strap and gold hardware.",
+                    featured: false
+                },
+                {
+                    id: 7,
+                    name: "Summer Floral Dress",
+                    price: 159,
+                    category: "women",
+                    image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=800&auto=format&fit=crop",
+                    sizes: ["XS", "S", "M", "L", "XL"],
+                    colors: ["#FFB6C1", "#FFF0F5", "#E6E6FA"],
+                    description: "Lightweight floral print dress with ruffled hem.",
+                    featured: false
+                },
+                {
+                    id: 8,
+                    name: "Designer Sunglasses",
+                    price: 249,
+                    category: "accessories",
+                    image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&auto=format&fit=crop",
+                    sizes: ["One Size"],
+                    colors: ["#000000", "#8B4513", "#FFD700"],
+                    description: "UV400 protection with polarized lenses and titanium frames.",
+                    featured: true
+                }
+            ],
+            cart: [],
+            currentFilter: {
+                category: 'all',
+                priceRange: 'all',
+                size: 'all'
+            }
+        };
+
+        // Router
+        const router = {
+            currentPage: 'home',
+            navigate(page, params = {}) {
+                this.currentPage = page;
+                window.scrollTo(0, 0);
+                
+                const app = document.getElementById('app');
+                app.innerHTML = '';
+                app.className = 'pt-20 min-h-screen fade-in';
+                
+                switch(page) {
+                    case 'home':
+                        app.innerHTML = this.renderHome();
+                        break;
+                    case 'shop':
+                        app.innerHTML = this.renderShop();
+                        break;
+                    case 'product':
+                        app.innerHTML = this.renderProductDetail(params.id);
+                        break;
+                    case 'custom':
+                        app.innerHTML = this.renderCustomDesign();
+                        break;
+                    case 'about':
+                        app.innerHTML = this.renderAbout();
+                        break;
+                    case 'contact':
+                        app.innerHTML = this.renderContact();
+                        break;
+                    case 'checkout':
+                        app.innerHTML = this.renderCheckout();
+                        break;
+                }
+                
+                // Close mobile menu if open
+                document.getElementById('mobile-menu').classList.add('hidden');
+            },
+            
+            renderHome() {
+                const featured = store.products.filter(p => p.featured).slice(0, 4);
+                
+                return `
+                    <!-- Hero Section -->
+                    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+                        <div class="absolute inset-0 z-0">
+                            <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1920&auto=format&fit=crop" 
+                                 alt="Fashion Hero" 
+                                 class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+                        </div>
+                        <div class="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
+                            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight serif">
+                                Define Your <span class="gold-text italic">Style</span>
+                            </h1>
+                            <p class="text-xl md:text-2xl mb-10 font-light tracking-wide">
+                                Premium fashion meets unlimited creativity. Shop curated collections or design your own masterpiece.
+                            </p>
+                            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                                <button onclick="router.navigate('shop')" class="btn-primary px-10 py-4 text-white font-semibold uppercase tracking-widest text-sm">
+                                    Shop Now
+                                </button>
+                                <button onclick="router.navigate('custom')" class="border-2 border-white text-white px-10 py-4 font-semibold uppercase tracking-widest text-sm hover:bg-white hover:text-black transition-all">
+                                    Design Your Own
+                                </button>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+                            <i class="fas fa-chevron-down text-white text-2xl"></i>
+                        </div>
+                    </section>
+
+                    <!-- Brand Intro -->
+                    <section class="py-20 bg-white">
+                        <div class="max-w-4xl mx-auto px-4 text-center">
+                            <h2 class="text-4xl serif font-bold mb-6">Crafted for the <span class="gold-text">Exceptional</span></h2>
+                            <p class="text-gray-600 text-lg leading-relaxed mb-8">
+                                At StyleCraft, we believe fashion is more than clothing—it's self-expression. 
+                                Our curated collections blend timeless elegance with contemporary trends, while our 
+                                custom design studio empowers you to bring your unique vision to life.
+                            </p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+                                <div class="p-6 border border-gray-200 hover:border-yellow-600 transition-colors">
+                                    <i class="fas fa-gem text-4xl gold-text mb-4"></i>
+                                    <h3 class="font-semibold text-lg mb-2">Premium Quality</h3>
+                                    <p class="text-gray-500 text-sm">Ethically sourced materials and expert craftsmanship</p>
+                                </div>
+                                <div class="p-6 border border-gray-200 hover:border-yellow-600 transition-colors">
+                                    <i class="fas fa-paint-brush text-4xl gold-text mb-4"></i>
+                                    <h3 class="font-semibold text-lg mb-2">Custom Design</h3>
+                                    <p class="text-gray-500 text-sm">Upload your art and create one-of-a-kind pieces</p>
+                                </div>
+                                <div class="p-6 border border-gray-200 hover:border-yellow-600 transition-colors">
+                                    <i class="fas fa-shipping-fast text-4xl gold-text mb-4"></i>
+                                    <h3 class="font-semibold text-lg mb-2">Fast Delivery</h3>
+                                    <p class="text-gray-500 text-sm">Worldwide shipping with real-time tracking</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Featured Products -->
+                    <section class="py-20 bg-gray-50">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="flex justify-between items-end mb-12">
+                                <div>
+                                    <h2 class="text-4xl serif font-bold mb-2">Featured Collection</h2>
+                                    <p class="text-gray-600">Handpicked favorites from this season</p>
+                                </div>
+                                <button onclick="router.navigate('shop')" class="hidden md:block text-sm font-semibold uppercase tracking-wider hover-gold border-b-2 border-transparent hover:border-yellow-600 pb-1">
+                                    View All Products
+                                </button>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                                ${featured.map(product => this.createProductCard(product)).join('')}
+                            </div>
+                            <div class="mt-12 text-center md:hidden">
+                                <button onclick="router.navigate('shop')" class="btn-primary px-8 py-3 text-white font-semibold uppercase tracking-wider text-sm">
+                                    View All
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Custom Design CTA -->
+                    <section class="py-20 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black"></div>
+                        <img src="https://images.unsplash.com/photo-1558171813-4c088753af8f?w=1920&auto=format&fit=crop" 
+                             class="absolute inset-0 w-full h-full object-cover opacity-50" alt="Design Studio">
+                        <div class="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
+                            <h2 class="text-4xl md:text-5xl serif font-bold mb-6">Create Your <span class="gold-text">Masterpiece</span></h2>
+                            <p class="text-xl mb-8 text-gray-200">Transform your ideas into wearable art. Our design studio makes customization simple and stunning.</p>
+                            <button onclick="router.navigate('custom')" class="btn-primary px-12 py-4 text-white font-semibold uppercase tracking-widest text-sm inline-flex items-center gap-2">
+                                Start Designing <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </section>
+                `;
+            },
+            
+            renderShop() {
+                const categories = ['all', 'men', 'women', 'kids', 'accessories'];
+                const priceRanges = [
+                    { value: 'all', label: 'All Prices' },
+                    { value: '0-50', label: 'Under $50' },
+                    { value: '50-150', label: '$50 - $150' },
+                    { value: '150-300', label: '$150 - $300' },
+                    { value: '300+', label: '$300+' }
+                ];
+                
+                let filtered = store.products;
+                if (store.currentFilter.category !== 'all') {
+                    filtered = filtered.filter(p => p.category === store.currentFilter.category);
+                }
+                if (store.currentFilter.priceRange !== 'all') {
+                    const range = store.currentFilter.priceRange;
+                    if (range === '0-50') filtered = filtered.filter(p => p.price < 50);
+                    else if (range === '50-150') filtered = filtered.filter(p => p.price >= 50 && p.price < 150);
+                    else if (range === '150-300') filtered = filtered.filter(p => p.price >= 150 && p.price < 300);
+                    else if (range === '300+') filtered = filtered.filter(p => p.price >= 300);
+                }
+                
+                return `
+                    <section class="py-12 bg-gray-50 min-h-screen">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="mb-12">
+                                <h1 class="text-4xl serif font-bold mb-4">Shop Collection</h1>
+                                <p class="text-gray-600">Discover our curated selection of premium fashion</p>
+                            </div>
+                            
+                            <!-- Filters -->
+                            <div class="bg-white p-6 rounded-lg shadow-sm mb-8 flex flex-wrap gap-4 items-center justify-between">
+                                <div class="flex flex-wrap gap-4 items-center">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-sm font-medium text-gray-500 uppercase tracking-wider">Category:</span>
+                                        <select onchange="shopFilter.setCategory(this.value)" class="input-field rounded px-3 py-2 text-sm">
+                                            ${categories.map(cat => 
+                                                `<option value="${cat}" ${store.currentFilter.category === cat ? 'selected' : ''}>
+                                                    ${cat.charAt(0).toUpperCase() + cat.slice(1)}
+                                                </option>`
+                                            ).join('')}
+                                        </select>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-sm font-medium text-gray-500 uppercase tracking-wider">Price:</span>
+                                        <select onchange="shopFilter.setPrice(this.value)" class="input-field rounded px-3 py-2 text-sm">
+                                            ${priceRanges.map(range => 
+                                                `<option value="${range.value}" ${store.currentFilter.priceRange === range.value ? 'selected' : ''}>
+                                                    ${range.label}
+                                                </option>`
+                                            ).join('')}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="text-sm text-gray-500">
+                                    Showing ${filtered.length} products
+                                </div>
+                            </div>
+                            
+                            <!-- Product Grid -->
+                            ${filtered.length > 0 ? `
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                                    ${filtered.map(product => this.createProductCard(product)).join('')}
+                                </div>
+                            ` : `
+                                <div class="text-center py-20">
+                                    <i class="fas fa-search text-6xl text-gray-300 mb-4"></i>
+                                    <p class="text-gray-500 text-lg">No products found matching your criteria</p>
+                                    <button onclick="shopFilter.reset()" class="mt-4 text-yellow-600 hover:underline">Reset Filters</button>
+                                </div>
+                            `}
+                        </div>
+                    </section>
+                `;
+            },
+            
+            renderProductDetail(id) {
+                const product = store.products.find(p => p.id === id);
+                if (!product) return '<div class="p-20 text-center">Product not found</div>';
+                
+                return `
+                    <section class="py-12 bg-white min-h-screen">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <button onclick="router.navigate('shop')" class="mb-8 flex items-center gap-2 text-gray-600 hover-gold transition-colors">
+                                <i class="fas fa-arrow-left"></i> Back to Shop
+                            </button>
+                            
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                                <!-- Image -->
+                                <div class="relative overflow-hidden rounded-lg bg-gray-100 aspect-[3/4]">
+                                    <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover product-image">
+                                </div>
+                                
+                                <!-- Details -->
+                                <div class="flex flex-col justify-center">
+                                    <span class="text-sm uppercase tracking-widest text-gray-500 mb-2">${product.category}</span>
+                                    <h1 class="text-4xl serif font-bold mb-4">${product.name}</h1>
+                                    <p class="text-3xl gold-text font-bold mb-6">$${product.price}</p>
+                                    
+                                    <p class="text-gray-600 mb-8 leading-relaxed">${product.description}</p>
+                                    
+                                    <!-- Colors -->
+                                    <div class="mb-6">
+                                        <h3 class="text-sm font-semibold uppercase tracking-wider mb-3">Select Color</h3>
+                                        <div class="flex gap-3" id="color-selector">
+                                            ${product.colors.map((color, idx) => `
+                                                <div class="color-option ${idx === 0 ? 'active' : ''}" 
+                                                     style="background-color: ${color}"
+                                                     onclick="productDetail.selectColor(this, '${color}')"></div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Sizes -->
+                                    <div class="mb-8">
+                                        <h3 class="text-sm font-semibold uppercase tracking-wider mb-3">Select Size</h3>
+                                        <div class="flex flex-wrap gap-2" id="size-selector">
+                                            ${product.sizes.map((size, idx) => `
+                                                <button class="size-option w-12 h-12 border-2 border-gray-300 rounded flex items-center justify-center font-medium text-sm hover:border-yellow-600 transition-all ${idx === 0 ? 'active' : ''}"
+                                                        onclick="productDetail.selectSize(this, '${size}')">
+                                                    ${size}
+                                                </button>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Actions -->
+                                    <div class="flex gap-4 mb-8">
+                                        <div class="flex items-center border-2 border-gray-300 rounded">
+                                            <button onclick="productDetail.adjustQty(-1)" class="px-4 py-3 hover:bg-gray-100">-</button>
+                                            <span id="qty-display" class="px-4 font-semibold">1</span>
+                                            <button onclick="productDetail.adjustQty(1)" class="px-4 py-3 hover:bg-gray-100">+</button>
+                                        </div>
+                                        <button onclick="productDetail.addToCart(${product.id})" class="flex-1 btn-primary text-white font-semibold uppercase tracking-wider">
+                                            Add to Cart
+                                        </button>
+                                        <button class="px-6 border-2 border-black hover:bg-black hover:text-white transition-colors">
+                                            <i class="far fa-heart"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Additional Info -->
+                                    <div class="border-t pt-6 space-y-4 text-sm text-gray-600">
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-truck gold-text"></i>
+                                            <span>Free shipping on orders over $100</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-undo gold-text"></i>
+                                            <span>30-day return policy</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-shield-alt gold-text"></i>
+                                            <span>Secure payment</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                `;
+            },
+            
+            renderCustomDesign() {
+                return `
+                    <section class="py-12 bg-gray-50 min-h-screen">
+                        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="text-center mb-12">
+                                <h1 class="text-4xl serif font-bold mb-4">Design Your <span class="gold-text">Own</span></h1>
+                                <p class="text-gray-600 max-w-2xl mx-auto">Upload your artwork, choose your garment, and create something uniquely yours. Our state-of-the-art printing ensures vibrant, lasting results.</p>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                                <!-- Design Controls -->
+                                <div class="bg-white p-8 rounded-lg shadow-sm space-y-6">
+                                    <div>
+                                        <h3 class="font-semibold mb-4 flex items-center gap-2">
+                                            <span class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-sm">1</span>
+                                            Upload Your Design
+                                        </h3>
+                                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-yellow-600 transition-colors cursor-pointer" onclick="document.getElementById('design-upload').click()">
+                                            <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-3"></i>
+                                            <p class="text-gray-600 mb-2">Click to upload or drag and drop</p>
+                                            <p class="text-sm text-gray-400">PNG, JPG up to 10MB</p>
+                                            <input type="file" id="design-upload" class="hidden" accept="image/*" onchange="customDesign.handleUpload(this)">
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <h3 class="font-semibold mb-4 flex items-center gap-2">
+                                            <span class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-sm">2</span>
+                                            Choose Garment
+                                        </h3>
+                                        <div class="grid grid-cols-3 gap-3">
+                                            ${['T-Shirt', 'Hoodie', 'Dress', 'Tank Top', 'Long Sleeve', 'Crop Top'].map((item, idx) => `
+                                                <button onclick="customDesign.selectGarment(this, '${item}')" 
+                                                        class="garment-option p-3 border-2 rounded-lg text-sm font-medium transition-all ${idx === 0 ? 'border-yellow-600 bg-yellow-50' : 'border-gray-200 hover:border-yellow-600'}">
+                                                    ${item}
+                                                </button>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <h3 class="font-semibold mb-4 flex items-center gap-2">
+                                            <span class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-sm">3</span>
+                                            Select Color & Size
+                                        </h3>
+                                        <div class="space-y-4">
+                                            <div>
+                                                <label class="text-sm text-gray-600 mb-2 block">Garment Color</label>
+                                                <div class="flex gap-3 flex-wrap">
+                                                    ${['#FFFFFF', '#000000', '#808080', '# navy', '#FF0000', '#FFD700'].map(color => `
+                                                        <div class="color-option" style="background-color: ${color}" onclick="customDesign.selectColor(this)"></div>
+                                                    `).join('')}
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label class="text-sm text-gray-600 mb-2 block">Size</label>
+                                                <select class="input-field w-full rounded px-3 py-2" id="custom-size">
+                                                    ${['XS', 'S', 'M', 'L', 'XL', 'XXL'].map(size => `<option value="${size}">${size}</option>`).join('')}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <h3 class="font-semibold mb-4 flex items-center gap-2">
+                                            <span class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-sm">4</span>
+                                            Special Instructions
+                                        </h3>
+                                        <textarea class="input-field w-full rounded px-3 py-2 h-24 resize-none" placeholder="Any specific requirements for your design..."></textarea>
+                                    </div>
+                                    
+                                    <div class="pt-4 border-t">
+                                        <div class="flex justify-between items-center mb-4">
+                                            <span class="text-gray-600">Estimated Price:</span>
+                                            <span class="text-2xl font-bold gold-text" id="custom-price">$59.99</span>
+                                        </div>
+                                        <button onclick="customDesign.submitOrder()" class="w-full btn-primary py-4 text-white font-semibold uppercase tracking-wider">
+                                            Submit Custom Order
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Preview -->
+                                <div class="bg-white p-8 rounded-lg shadow-sm">
+                                    <h3 class="font-semibold mb-6">Live Preview</h3>
+                                    <div class="design-preview rounded-lg aspect-square flex items-center justify-center relative overflow-hidden" id="preview-container">
+                                        <div class="text-center text-gray-400" id="preview-placeholder">
+                                            <i class="fas fa-tshirt text-6xl mb-4"></i>
+                                            <p>Your design will appear here</p>
+                                        </div>
+                                        <img id="preview-image" class="absolute inset-0 w-full h-full object-contain hidden" alt="Design Preview">
+                                        <div id="design-overlay" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 hidden">
+                                            <img src="" class="w-full h-full object-contain" id="uploaded-design">
+                                        </div>
+                                    </div>
+                                    <div class="mt-6 space-y-2 text-sm text-gray-600">
+                                        <p><i class="fas fa-info-circle gold-text mr-2"></i>Preview is approximate. Final product may vary slightly.</p>
+                                        <p><i class="fas fa-clock gold-text mr-2"></i>Custom orders ship within 5-7 business days</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                `;
+            },
+            
+            renderAbout() {
+                return `
+                    <section class="py-12 bg-white">
+                        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="text-center mb-16">
+                                <h1 class="text-5xl serif font-bold mb-6">Our <span class="gold-text">Story</span></h1>
+                                <p class="text-xl text-gray-600 italic">"Fashion is the armor to survive the reality of everyday life."</p>
+                            </div>
+                            
+                            <div class="prose prose-lg mx-auto text-gray-600 space-y-6 mb-16">
+                                <p>Founded in 2020, StyleCraft began with a simple mission: to bridge the gap between high fashion and personal expression. We believed that everyone deserves access to premium clothing that truly represents who they are.</p>
+                                <p>What started as a small studio in New York has grown into a global brand, but our core values remain unchanged. Every piece in our collection is thoughtfully designed, ethically produced, and crafted to last.</p>
+                                <p>Our custom design division was born from customer demand—people wanted not just to wear fashion, but to create it. Today, we serve thousands of creators, brands, and individuals who refuse to settle for off-the-rack.</p>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                                <div class="text-center p-6">
+                                    <div class="text-4xl font-bold gold-text mb-2">50K+</div>
+                                    <div class="text-gray-600">Happy Customers</div>
+                                </div>
+                                <div class="text-center p-6">
+                                    <div class="text-4xl font-bold gold-text mb-2">100%</div>
+                                    <div class="text-gray-600">Ethical Sourcing</div>
+                                </div>
+                                <div class="text-center p-6">
+                                    <div class="text-4xl font-bold gold-text mb-2">24/7</div>
+                                    <div class="text-gray-600">Design Support</div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-50 p-8 rounded-lg">
+                                <h2 class="text-2xl serif font-bold mb-4">Our Mission</h2>
+                                <p class="text-gray-600 leading-relaxed">To democratize fashion design by providing tools, quality materials, and expert craftsmanship that empower individuals to express their unique identity through clothing.</p>
+                            </div>
+                        </div>
+                    </section>
+                `;
+            },
+            
+            renderContact() {
+                return `
+                    <section class="py-12 bg-gray-50 min-h-screen">
+                        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                                <div>
+                                    <h1 class="text-4xl serif font-bold mb-6">Get in <span class="gold-text">Touch</span></h1>
+                                    <p class="text-gray-600 mb-8">Have questions about your order, our custom design services, or just want to say hello? We'd love to hear from you.</p>
+                                    
+                                    <div class="space-y-6 mb-8">
+                                        <div class="flex items-start gap-4">
+                                            <div class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center flex-shrink-0">
+                                                <i class="fas fa-envelope"></i>
+                                            </div>
+                                            <div>
+                                                <h3 class="font-semibold mb-1">Email Us</h3>
+                                                <p class="text-gray-600">hello@stylecraft.com</p>
+                                                <p class="text-gray-600">support@stylecraft.com</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start gap-4">
+                                            <div class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center flex-shrink-0">
+                                                <i class="fas fa-phone"></i>
+                                            </div>
+                                            <div>
+                                                <h3 class="font-semibold mb-1">Call Us</h3>
+                                                <p class="text-gray-600">+1 (555) 123-4567</p>
+                                                <p class="text-sm text-gray-400">Mon-Fri 9am-6pm EST</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start gap-4">
+                                            <div class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center flex-shrink-0">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                            </div>
+                                            <div>
+                                                <h3 class="font-semibold mb-1">Visit Us</h3>
+                                                <p class="text-gray-600">123 Fashion Avenue<br>New York, NY 10001</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex gap-4">
+                                        <a href="#" class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:bg-yellow-600 transition-colors">
+                                            <i class="fab fa-instagram"></i>
+                                        </a>
+                                        <a href="#" class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:bg-blue-600 transition-colors">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                        <a href="#" class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:bg-red-600 transition-colors">
+                                            <i class="fab fa-pinterest-p"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-white p-8 rounded-lg shadow-sm">
+                                    <form onsubmit="contact.handleSubmit(event)" class="space-y-6">
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-sm font-medium mb-2">First Name</label>
+                                                <input type="text" required class="input-field w-full rounded px-3 py-2">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium mb-2">Last Name</label>
+                                                <input type="text" required class="input-field w-full rounded px-3 py-2">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-2">Email</label>
+                                            <input type="email" required class="input-field w-full rounded px-3 py-2">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-2">Subject</label>
+                                            <select class="input-field w-full rounded px-3 py-2">
+                                                <option>General Inquiry</option>
+                                                <option>Order Status</option>
+                                                <option>Custom Design</option>
+                                                <option>Returns</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-2">Message</label>
+                                            <textarea required rows="4" class="input-field w-full rounded px-3 py-2 resize-none"></textarea>
+                                        </div>
+                                        <button type="submit" class="w-full btn-primary py-3 text-white font-semibold uppercase tracking-wider">
+                                            Send Message
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                            <!-- Map Placeholder -->
+                            <div class="mt-12 h-96 bg-gray-200 rounded-lg flex items-center justify-center relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1200&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-50" alt="Map">
+                                <div class="relative z-10 text-center">
+                                    <i class="fas fa-map-marked-alt text-4xl gold-text mb-2"></i>
+                                    <p class="font-semibold">New York Flagship Store</p>
+                                    <p class="text-sm text-gray-600">123 Fashion Avenue</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                `;
+            },
+            
+            renderCheckout() {
+                const total = store.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+                
+                return `
+                    <section class="py-12 bg-gray-50 min-h-screen">
+                        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <h1 class="text-3xl serif font-bold mb-8">Checkout</h1>
+                            
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                <div class="space-y-6">
+                                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                                        <h2 class="font-semibold mb-4 flex items-center gap-2">
+                                            <span class="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs">1</span>
+                                            Contact Information
+                                        </h2>
+                                        <div class="space-y-4">
+                                            <input type="email" placeholder="Email" class="input-field w-full rounded px-3 py-2">
+                                            <input type="tel" placeholder="Phone" class="input-field w-full rounded px-3 py-2">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                                        <h2 class="font-semibold mb-4 flex items-center gap-2">
+                                            <span class="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs">2</span>
+                                            Shipping Address
+                                        </h2>
+                                        <div class="space-y-4">
+                                            <input type="text" placeholder="Full Name" class="input-field w-full rounded px-3 py-2">
+                                            <input type="text" placeholder="Address" class="input-field w-full rounded px-3 py-2">
+                                            <div class="grid grid-cols-2 gap-4">
+                                                <input type="text" placeholder="City" class="input-field w-full rounded px-3 py-2">
+                                                <input type="text" placeholder="Postal Code" class="input-field w-full rounded px-3 py-2">
+                                            </div>
+                                            <input type="text" placeholder="Country" class="input-field w-full rounded px-3 py-2">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                                        <h2 class="font-semibold mb-4 flex items-center gap-2">
+                                            <span class="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs">3</span>
+                                            Payment Method
+                                        </h2>
+                                        <div class="space-y-3">
+                                            <label class="flex items-center gap-3 p-3 border rounded cursor-pointer hover:border-yellow-600 transition-colors">
+                                                <input type="radio" name="payment" checked class="text-yellow-600">
+                                                <span>Credit Card</span>
+                                                <i class="fab fa-cc-visa ml-auto text-2xl"></i>
+                                            </label>
+                                            <label class="flex items-center gap-3 p-3 border rounded cursor-pointer hover:border-yellow-600 transition-colors">
+                                                <input type="radio" name="payment" class="text-yellow-600">
+                                                <span>PayPal</span>
+                                                <i class="fab fa-paypal ml-auto text-2xl"></i>
+                                            </label>
+                                        </div>
+                                        <div class="mt-4 space-y-3" id="card-fields">
+                                            <input type="text" placeholder="Card Number" class="input-field w-full rounded px-3 py-2">
+                                            <div class="grid grid-cols-2 gap-4">
+                                                <input type="text" placeholder="MM/YY" class="input-field w-full rounded px-3 py-2">
+                                                <input type="text" placeholder="CVC" class="input-field w-full rounded px-3 py-2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="bg-white p-6 rounded-lg shadow-sm sticky top-24">
+                                        <h2 class="font-semibold mb-4">Order Summary</h2>
+                                        <div class="space-y-4 mb-6 max-h-64 overflow-y-auto">
+                                            ${store.cart.map(item => `
+                                                <div class="flex gap-4">
+                                                    <img src="${item.image}" class="w-16 h-16 object-cover rounded">
+                                                    <div class="flex-1">
+                                                        <h4 class="font-medium text-sm">${item.name}</h4>
+                                                        <p class="text-xs text-gray-500">${item.size} / ${item.color}</p>
+                                                        <p class="text-sm font-semibold">$${item.price} x ${item.qty}</p>
+                                                    </div>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                        <div class="border-t pt-4 space-y-2">
+                                            <div class="flex justify-between text-sm">
+                                                <span>Subtotal</span>
+                                                <span>$${total.toFixed(2)}</span>
+                                            </div>
+                                            <div class="flex justify-between text-sm">
+                                                <span>Shipping</span>
+                                                <span>Free</span>
+                                            </div>
+                                            <div class="flex justify-between text-sm">
+                                                <span>Tax</span>
+                                                <span>$${(total * 0.08).toFixed(2)}</span>
+                                            </div>
+                                            <div class="flex justify-between text-lg font-bold pt-2 border-t">
+                                                <span>Total</span>
+                                                <span class="gold-text">$${(total * 1.08).toFixed(2)}</span>
+                                            </div>
+                                        </div>
+                                        <button onclick="checkout.submit()" class="w-full btn-primary py-4 mt-6 text-white font-semibold uppercase tracking-wider">
+                                            Complete Order
+                                        </button>
+                                        <button onclick="router.navigate('shop')" class="w-full mt-3 text-sm text-gray-600 hover:text-black">
+                                            Continue Shopping
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                `;
+            },
+            
+            createProductCard(product) {
+                return `
+                    <div class="product-card bg-white rounded-lg overflow-hidden shadow-sm cursor-pointer group" onclick="router.navigate('product', {id: ${product.id}})">
+                        <div class="relative aspect-[3/4] overflow-hidden bg-gray-100">
+                            <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover product-image">
+                            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300"></div>
+                            <button onclick="event.stopPropagation(); cart.addItem(${product.id})" 
+                                    class="absolute bottom-4 right-4 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center transform translate-y-20 group-hover:translate-y-0 transition-transform duration-300 hover:bg-black hover:text-white">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">${product.category}</p>
+                            <h3 class="font-semibold text-lg mb-1 group-hover-gold transition-colors">${product.name}</h3>
+                            <p class="gold-text font-bold">$${product.price}</p>
+                        </div>
+                    </div>
+                `;
+            }
+        };
+
+        // Cart Management
+        const cart = {
+            toggle() {
+                const sidebar = document.getElementById('cart-sidebar');
+                const overlay = document.getElementById('cart-overlay');
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('hidden');
+                document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+                this.render();
+            },
+            
+            addItem(productId, qty = 1, size = null, color = null) {
+                const product = store.products.find(p => p.id === productId);
+                if (!product) return;
+                
+                const existing = store.cart.find(item => 
+                    item.id === productId && 
+                    item.size === (size || product.sizes[0]) && 
+                    item.color === (color || product.colors[0])
+                );
+                
+                if (existing) {
+                    existing.qty += qty;
+                } else {
+                    store.cart.push({
+                        ...product,
+                        qty: qty,
+                        size: size || product.sizes[0],
+                        color: color || product.colors[0],
+                        cartId: Date.now()
+                    });
+                }
+                
+                this.updateCount();
+                this.render();
+                showToast('Added to cart successfully');
+            },
+            
+            removeItem(cartId) {
+                store.cart = store.cart.filter(item => item.cartId !== cartId);
+                this.updateCount();
+                this.render();
+            },
+            
+            updateQty(cartId, delta) {
+                const item = store.cart.find(i => i.cartId === cartId);
+                if (item) {
+                    item.qty += delta;
+                    if (item.qty <= 0) this.removeItem(cartId);
+                    else this.render();
+                }
+                this.updateCount();
+            },
+            
+            updateCount() {
+                const count = store.cart.reduce((sum, item) => sum + item.qty, 0);
+                document.getElementById('cart-count').textContent = count;
+            },
+            
+            render() {
+                const container = document.getElementById('cart-items');
+                const totalEl = document.getElementById('cart-total');
+                
+                if (store.cart.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-12 text-gray-400">
+                            <i class="fas fa-shopping-bag text-6xl mb-4 opacity-30"></i>
+                            <p>Your cart is empty</p>
+                            <button onclick="cart.toggle(); router.navigate('shop')" class="mt-4 text-yellow-600 hover:underline text-sm">Start Shopping</button>
+                        </div>
+                    `;
+                    totalEl.textContent = '$0.00';
+                    return;
+                }
+                
+                container.innerHTML = store.cart.map(item => `
+                    <div class="flex gap-4 bg-gray-50 p-4 rounded-lg slide-in">
+                        <img src="${item.image}" class="w-20 h-24 object-cover rounded" alt="${item.name}">
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-sm mb-1">${item.name}</h4>
+                            <p class="text-xs text-gray-500 mb-2">${item.size} / ${item.color}</p>
+                            <p class="gold-text font-bold">$${item.price}</p>
+                            <div class="flex items-center gap-3 mt-2">
+                                <button onclick="cart.updateQty(${item.cartId}, -1)" class="w-6 h-6 rounded border flex items-center justify-center hover:bg-gray-200">-</button>
+                                <span class="text-sm font-medium">${item.qty}</span>
+                                <button onclick="cart.updateQty(${item.cartId}, 1)" class="w-6 h-6 rounded border flex items-center justify-center hover:bg-gray-200">+</button>
+                                <button onclick="cart.removeItem(${item.cartId})" class="ml-auto text-red-500 hover:text-red-700 text-xs">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                const total = store.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+                totalEl.textContent = '$' + total.toFixed(2);
+            },
+            
+            checkout() {
+                if (store.cart.length === 0) {
+                    showToast('Your cart is empty');
+                    return;
+                }
+                this.toggle();
+                router.navigate('checkout');
+            }
+        };
+
+        // Shop Filter
+        const shopFilter = {
+            setCategory(cat) {
+                store.currentFilter.category = cat;
+                router.navigate('shop');
+            },
+            setPrice(range) {
+                store.currentFilter.priceRange = range;
+                router.navigate('shop');
+            },
+            reset() {
+                store.currentFilter = { category: 'all', priceRange: 'all', size: 'all' };
+                router.navigate('shop');
+            }
+        };
+
+        // Product Detail Page Logic
+        const productDetail = {
+            selectedSize: null,
+            selectedColor: null,
+            qty: 1,
+            
+            selectSize(el, size) {
+                document.querySelectorAll('.size-option').forEach(btn => btn.classList.remove('active'));
+                el.classList.add('active');
+                this.selectedSize = size;
+            },
+            
+            selectColor(el, color) {
+                document.querySelectorAll('.color-option').forEach(btn => btn.classList.remove('active'));
+                el.classList.add('active');
+                this.selectedColor = color;
+            },
+            
+            adjustQty(delta) {
+                this.qty = Math.max(1, this.qty + delta);
+                document.getElementById('qty-display').textContent = this.qty;
+            },
+            
+            addToCart(productId) {
+                const product = store.products.find(p => p.id === productId);
+                cart.addItem(
+                    productId, 
+                    this.qty, 
+                    this.selectedSize || product.sizes[0], 
+                    this.selectedColor || product.colors[0]
+                );
+            }
+        };
+
+        // Custom Design Logic
+        const customDesign = {
+            selectedGarment: 'T-Shirt',
+            selectedColor: '#FFFFFF',
+            
+            handleUpload(input) {
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('preview-placeholder').classList.add('hidden');
+                        document.getElementById('design-overlay').classList.remove('hidden');
+                        document.getElementById('uploaded-design').src = e.target.result;
+                        showToast('Design uploaded successfully');
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            },
+            
+            selectGarment(el, garment) {
+                document.querySelectorAll('.garment-option').forEach(btn => {
+                    btn.classList.remove('border-yellow-600', 'bg-yellow-50');
+                    btn.classList.add('border-gray-200');
+                });
+                el.classList.remove('border-gray-200');
+                el.classList.add('border-yellow-600', 'bg-yellow-50');
+                this.selectedGarment = garment;
+                
+                // Update price based on garment
+                const prices = { 'T-Shirt': 59.99, 'Hoodie': 89.99, 'Dress': 129.99, 'Tank Top': 49.99, 'Long Sleeve': 69.99, 'Crop Top': 54.99 };
+                document.getElementById('custom-price').textContent = '$' + (prices[garment] || 59.99).toFixed(2);
+            },
+            
+            selectColor(el) {
+                document.querySelectorAll('.color-option').forEach(btn => btn.classList.remove('active'));
+                el.classList.add('active');
+                this.selectedColor = el.style.backgroundColor;
+            },
+            
+            submitOrder() {
+                if (!document.getElementById('design-upload').files.length) {
+                    showToast('Please upload a design first');
+                    return;
+                }
+                showToast('Custom order submitted! We will contact you shortly.');
+                setTimeout(() => router.navigate('home'), 2000);
+            }
+        };
+
+        // Contact Form
+        const contact = {
+            handleSubmit(e) {
+                e.preventDefault();
+                showToast('Message sent successfully! We will respond within 24 hours.');
+                e.target.reset();
+            }
+        };
+
+        // Checkout
+        const checkout = {
+            submit() {
+                showToast('Order placed successfully! Thank you for shopping with StyleCraft.');
+                store.cart = [];
+                cart.updateCount();
+                setTimeout(() => router.navigate('home'), 2000);
+            }
+        };
+
+        // Utility Functions
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-md');
+            } else {
+                navbar.classList.remove('shadow-md');
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            router.navigate('home');
+        });
+    </script>
+</body>
+</html>
